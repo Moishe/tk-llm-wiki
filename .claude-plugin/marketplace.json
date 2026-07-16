@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "llm-wiki",
+  "description": "LLM-Wiki for TK — turn a library into a persistent, self-maintaining wiki.",
+  "owner": {
+    "name": "Moishe Lettvin"
+  },
+  "plugins": [
+    {
+      "name": "llm-wiki",
+      "description": "Compile a TK library into a persistent, interlinked wiki (build/ingest/query/lint) that the agent keeps current as sources change.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
