@@ -23,19 +23,16 @@ Omit the operation and it defaults to `ingest` if a wiki exists, else offers to 
 
 ## Prerequisites
 
-- A **TK** account, and the **TK MCP server connected in Claude Code** (`tk-remote` for production; `tk-local` for a local dev instance). The skill uses the standard TK document/library tools.
+- A **TK** account, and the **TK MCP server connected in Claude Code** (called `tk-remote`). The skill uses the standard TK document/library tools.
 - You must be a **member** of the library you point it at (enumerating a library requires membership).
-- The **surgical edit ops** must be available on your TK deployment — the skill maintains the wiki with `edit_document`'s `replace_node_contents` / `insert_sibling_node` / `delete_node` (TK-1818 / TK-1823). If your TK backend predates those, `build`/`query` still work but `ingest`/`lint` edits will fall back or fail.
-
-> Note: the docs reference internal TK Linear tickets (TK-1818, TK-1823, TK-1829, TK-1831) as design context and known-gap tracking. They're informational; the skill doesn't require access to them.
 
 ## Install (as a plugin)
 
 Once this repo is pushed somewhere your coworkers can reach (e.g. GitHub):
 
 ```
-/plugin marketplace add <owner>/llm-wiki      # or a git URL, or a local path to this repo
-/plugin install llm-wiki@llm-wiki
+/plugin marketplace add Moishe/tk-llm-wiki      # or a git URL, or a local path to this repo
+/plugin install tk-llm-wiki@llm-wiki
 ```
 
 To install from a **local clone** without pushing:
@@ -46,8 +43,6 @@ To install from a **local clone** without pushing:
 ```
 
 Update by re-pulling the repo (and re-running `/plugin marketplace update llm-wiki`).
-
-> If you previously had this skill as a personal skill at `~/.claude/skills/llm-wiki/`, remove that copy after installing the plugin so the skill isn't registered twice.
 
 ## What it creates
 
