@@ -1,7 +1,7 @@
 {
   "name": "llm-wiki",
-  "version": "0.1.0",
-  "description": "Compile a TK library into a persistent, self-maintaining wiki (Karpathy's LLM-wiki pattern): build | ingest | query | lint over three private TK docs.",
+  "version": "0.2.0",
+  "description": "Compile a TK library, or a filtered collection of your own notes, into a persistent, self-maintaining wiki (Karpathy's LLM-wiki pattern): build | ingest | query | lint over three private TK docs.",
   "author": {
     "name": "Moishe Lettvin"
   }

@@ -18,11 +18,19 @@ The library's own documents are the raw sources and are **never modified**.
 /llm-wiki ingest "My Library"     # fold in what changed since last time
 /llm-wiki query  "a cross-source question about the library"
 /llm-wiki lint   "My Library"     # health-check; proposes fixes
+/llm-wiki build  "all my notes not created by the assistant or MCP"   # a collection instead of a library
 ```
 
 - Omit the operation and it defaults to `ingest` if the wiki exists, else offers to `build`.
 - You can pass a library UUID instead of a name.
 - **Trial build:** ask for a capped first build (e.g. "build the first 15 sources") to validate the shape before compiling a large library.
+
+## Collections
+
+Instead of a library, the source can be a filter over your own notes. Build echoes the resolved filter and the match count, and asks before it starts. Two things to know:
+
+- `created_by_ai` was only recorded from 2026-08-05. For older notes, AI output is excluded by tag (any tag that appears only on AI-created notes, which you review), and anything else that looks machine-written is judged by content and recorded as Skipped.
+- A big collection (hundreds of notes) runs as a fan-out: parallel reader agents, then one synthesizer (`references/batch.md`). It costs millions of tokens, so start with a trial cap.
 
 ## Local vs production
 

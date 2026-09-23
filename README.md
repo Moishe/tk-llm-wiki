@@ -17,6 +17,7 @@ Nothing is ever written into the shared library, and source documents are never 
 /llm-wiki ingest "My Library"     # fold in only what changed since last time
 /llm-wiki query  "a question spanning several sources"   # cited answer; can file it back
 /llm-wiki lint   "My Library"     # health-check; proposes fixes, never deletes silently
+/llm-wiki build  "all my notes not created by the assistant or MCP"   # a collection instead of a library
 ```
 
 Omit the operation and it defaults to `ingest` if a wiki exists, else offers to `build`. You can pass a library UUID instead of a name. See `skills/llm-wiki/HOWTO.md` for the full usage guide and `skills/llm-wiki/DESIGN.md` for the design rationale.
@@ -24,7 +25,7 @@ Omit the operation and it defaults to `ingest` if a wiki exists, else offers to 
 ## Prerequisites
 
 - A **TK** account, and the **TK MCP server connected in Claude Code** (called `tk-remote`). The skill uses the standard TK document/library tools.
-- You must be a **member** of the library you point it at (enumerating a library requires membership).
+- You must be a **member** of the library you point it at (enumerating a library requires membership). A **collection** (a filter over your own notes) needs no library: it compiles notes you own, selected by fixed metadata (AI-created or not, dates, tags, daily-note kind), and the filter is stored in the index so every ingest selects the same set.
 
 ## Install (as a plugin)
 
