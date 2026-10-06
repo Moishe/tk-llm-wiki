@@ -36,6 +36,7 @@ Deciding which: if the argument matches a library (exact name or UUID), it's a l
 | `tags_any` / `tags_none` | tag include/exclude | doc metadata |
 | `daily_note_kind_none` | drop daily notes of these kinds (`scratch` = template scratch pad, `prompt` = writing-prompt note) | `daily_note_kind` |
 | `title_excludes` | title substrings/patterns to drop | doc metadata |
+| `shared_min_members` | keep only docs on the user's profile (`is_shared_to_profile`) **or** in a library with at least N members. Membership is looked up fresh on every run; a library with an unknown count (e.g. one the user has left) does not count, so a doc that stops being shared becomes a departure | doc metadata + `get_user_libraries` |
 
 Topical criteria ("notes about hiring") are **not** filter fields: semantic search ranks, it doesn't select, so re-running it would add and drop sources. If the description has a topical part, say so and offer tags or a library instead.
 

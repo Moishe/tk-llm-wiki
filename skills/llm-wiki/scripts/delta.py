@@ -9,14 +9,21 @@ Writes  <workdir>/delta.tsv      matching docs that are new, or edited since rec
 Prints  counts, including departures (processed ids no longer in scope).
 
 filter.json keys: created_by_ai (bool), created_after / created_before (ISO date),
-tags_any / tags_none (list), daily_note_kind_none (list), title_excludes (list of substrings).
+tags_any / tags_none (list), daily_note_kind_none (list), title_excludes (list of substrings),
+shared_min_members (int): on the profile, or in a library with >= N members. Needs all.tsv
+columns is_shared_to_profile and library_ids ("|"-joined), and <workdir>/libraries.tsv
+(library_id <TAB> member_count). A library missing from libraries.tsv counts as unshared.
 """
 import csv, json, sys, pathlib
 from datetime import datetime
 
 ts = lambda s: datetime.fromisoformat(s.replace('Z', '+00:00'))
 
-def passes(r, f):
+def shared(r, n, members):
+    libs = filter(None, r['library_ids'].split('|'))
+    return r['is_shared_to_profile'] == 'true' or any(members.get(l, 0) >= n for l in libs)
+
+def passes(r, f, members):
     tags = set(filter(None, r['tags'].split('|')))
     created = r['created_at'][:10]
     return all([
@@ -27,6 +34,7 @@ def passes(r, f):
         not tags & (set(f.get('tags_none', [])) | {'llm-wiki'}),  # the skill's own docs, always
         r['daily_note_kind'] not in f.get('daily_note_kind_none', []),
         not any(s in r['title'] for s in f.get('title_excludes', [])),
+        'shared_min_members' not in f or shared(r, f['shared_min_members'], members),
     ])
 
 def main(d):
@@ -36,7 +44,10 @@ def main(d):
     ids = [r['id'] for r in rows]
     assert len(ids) == len(set(ids)), 'duplicate ids in all.tsv'
     processed = dict(l.rstrip('\n').split('\t') for l in open(d / 'processed.tsv') if l.strip())
-    match = [r for r in rows if passes(r, f)]
+    members = {}
+    if 'shared_min_members' in f:
+        members = {l: int(n) for l, n in (x.rstrip('\n').split('\t') for x in open(d / 'libraries.tsv') if x.strip())}
+    match = [r for r in rows if passes(r, f, members)]
     delta = [r for r in match if r['id'] not in processed or ts(r['updated_at']) > ts(processed[r['id']])]
     departures = sorted(set(processed) - {r['id'] for r in match})
     with open(d / 'delta.tsv', 'w') as out:
