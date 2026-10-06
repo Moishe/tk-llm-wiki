@@ -49,6 +49,8 @@ For a **collection** scope, the index opens with a `## Scope` block holding the 
 - resolved: <YYYY-MM-DD> · <N> matching docs
 ```
 
+A shared-only collection adds `shared_min_members=<N>` to the filter line, e.g. `created_by_ai=false · shared_min_members=5 · tags_none=[llm-wiki]`.
+
 (A library scope needs no Scope block: `- kind: library · id: <uuid>` is enough.)
 
 

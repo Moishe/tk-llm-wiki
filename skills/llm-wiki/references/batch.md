@@ -8,7 +8,7 @@ Work in a local directory (e.g. `~/working-artifacts/llm-wiki-<scope>/`), never 
 
 ## 1. Enumerate (one agent, then a script)
 
-- **Collection:** an agent pages `get_recent_documents(limit:100, sort_by:"created_at")` until `has_more` is false. After each page it appends every doc, unfiltered, to `all.tsv` with columns `id, created_at, updated_at, created_by_ai, daily_note_kind, tags ("|"-joined), title`. It reports only row counts and the API `total`.
+- **Collection:** an agent pages `get_recent_documents(limit:100, sort_by:"created_at")` until `has_more` is false. After each page it appends every doc, unfiltered, to `all.tsv` with columns `id, created_at, updated_at, created_by_ai, daily_note_kind, tags ("|"-joined), title, is_shared_to_profile, library_ids ("|"-joined)`. If the filter uses `shared_min_members`, it also writes `libraries.tsv` (`library_id <TAB> member_count`) from one `get_user_libraries` call. It reports only row counts and the API `total`.
 - **Library:** the same, with `get_library_documents`.
 - Write `filter.json` (the index's Scope filter) and `processed.tsv` (`id <TAB> recorded updated_at` for every Sources and Skipped entry). Then run `python3 scripts/delta.py <dir>`. It writes `delta.tsv` and prints the match/delta/departure counts.
 - **Sanity-check before going on:** the row count should equal the API total, and the match count should be close to the one recorded at build. Investigate every departure. In the first run, the one departure turned out to be a note the user had deleted and re-imported under a new id.
